@@ -1,8 +1,7 @@
 import inquirer from 'inquirer';
 import fs from "fs/promises";
 
-
-let {projectName, license} = await inquirer
+let {projectName, projectDescription, installSteps, usageSteps, featuresSection, creditsSection, license,} = await inquirer
     .prompt([
         {
             type: 'input',
@@ -12,7 +11,7 @@ let {projectName, license} = await inquirer
         {
             type: 'input',
             name: 'projectDescription',
-            message: "Write a short description for your project",
+            message: "Write a short description for your project: ",
         },
         {
             type: 'list',
@@ -29,6 +28,16 @@ let {projectName, license} = await inquirer
                 },
         },
         {
+            type: 'input',
+            name: 'usageSteps',
+            message: "Write a short set of instructions on how to use your project: ",
+        },
+        {
+            type: 'input',
+            name: 'creditsSection',
+            message: "Include anyone you would like to credit in your readme: ",
+        },
+        {
             type: 'list',
             name: 'license',
             message: 'Which license would you like for your project?',
@@ -39,7 +48,14 @@ let {projectName, license} = await inquirer
                 'GNU GPL v2'
             ],
         },
+        {
+            type: 'input',
+            name: 'featuresSection',
+            message: "Include any features you would like to point out: ",
+        },
     ])
+
+
 
 
 let readmeText = 
@@ -50,14 +66,14 @@ let readmeText =
 
 ${projectDescription}
 
-## Table of Contents (Optional)
-
-If your README is long, add a table of contents to make it easy for users to find what they need.
+## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Credits](#credits)
 - [License](#license)
+- [Badges](#badges)
+- [Features](#features)
 
 ## Installation
 
@@ -65,19 +81,11 @@ ${installSteps}
 
 ## Usage
 
-Provide instructions and examples for use. Include screenshots as needed.
-
-To add a screenshot, create an assets/images folder in your repository and upload your screenshot to it. Then, using the relative file path, add it to your README using the following syntax:
-
-![alt text](assets/images/screenshot.png)
+${usageSteps}
 
 ## Credits
 
-List your collaborators, if any, with links to their GitHub profiles.
-
-If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section.
-
-If you followed tutorials, include links to those here as well.
+${creditsSection}
 
 ## License
 
@@ -89,15 +97,8 @@ ${generateBadge(license)}
 
 ## Features
 
-If your project has a lot of features, list them here.
+${featuresSection}
 
-## How to Contribute
-
-If you created an application or package and would like other developers to contribute to it, you can include guidelines for how to do so. The [Contributor Covenant](https://www.contributor-covenant.org/) is an industry standard, but you can always write your own if you'd prefer.
-
-## Tests
-
-Go the extra mile and write tests for your application. Then provide examples on how to run them here.
 `;
 
 fs.writeFile("README.md", readmeText);
