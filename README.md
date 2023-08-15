@@ -1,5 +1,5 @@
 
-# Test6
+# Testing
 
 ## Description
 
@@ -41,13 +41,11 @@ If you followed tutorials, include links to those here as well.
 
 ## License
 
-[![License: GPL v2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+Please refer to the LICENSE in the repo.
 
 ## Badges
 
-[![License: GPL v2](https://img.shields.io/badge/License-GPL_v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
-
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
 

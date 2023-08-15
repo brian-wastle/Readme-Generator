@@ -5,20 +5,39 @@ import fs from "fs/promises";
 let {projectName, license} = await inquirer
     .prompt([
         {
-        type: 'input',
-        name: 'projectName',
-        message: "Whatis the name of your project?",
+            type: 'input',
+            name: 'projectName',
+            message: "What is the name of your project?",
         },
         {
-        type: 'list',
-        name: 'license',
-        message: 'Which license would you like for your project?',
-        choices: [
-            'Apache 2.0',
-            'MIT',
-            'GNU GPL v3',
-            'GNU GPL v2'
-        ],
+            type: 'input',
+            name: 'projectDescription',
+            message: "Write a short description for your project",
+        },
+        {
+            type: 'list',
+            name: 'projectInstallation',
+            message: "Are there any installation steps required?",
+            choices: ['Yes', 'No'],
+        },
+        {
+            type: 'input',
+            name: 'installSteps',
+            message: 'Include your install steps here: ',
+            when(answers) {
+                return answers.projectInstallation == 'Yes';
+                },
+        },
+        {
+            type: 'list',
+            name: 'license',
+            message: 'Which license would you like for your project?',
+            choices: [
+                'Apache 2.0',
+                'MIT',
+                'GNU GPL v3',
+                'GNU GPL v2'
+            ],
         },
     ])
 
@@ -29,12 +48,7 @@ let readmeText =
 
 ## Description
 
-Provide a short description explaining the what, why, and how of your project. Use the following questions as a guide:
-
-- What was your motivation?
-- Why did you build this project? (Note: the answer is not "Because it was a homework assignment.")
-- What problem does it solve?
-- What did you learn?
+${projectDescription}
 
 ## Table of Contents (Optional)
 
@@ -47,7 +61,7 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 ## Installation
 
-What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.
+${installSteps}
 
 ## Usage
 
@@ -67,10 +81,11 @@ If you followed tutorials, include links to those here as well.
 
 ## License
 
+Please refer to the LICENSE in the repo.
 
 ## Badges
 
-${generateLicense(license)}
+${generateBadge(license)}
 
 ## Features
 
@@ -88,20 +103,8 @@ Go the extra mile and write tests for your application. Then provide examples on
 fs.writeFile("README.md", readmeText);
 
 
-function generateLicense() {
-    // if (license === 'Apache 2.0') {
-    //     return '[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)';
-    // }
-    // if (license === 'Apache 2.0') {
-    //     return '[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)';
-    // }
-    // if (license === 'Apache 2.0') {
-    //     return '[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)';
-    // }
-    // if (license === 'Apache 2.0') {
-    //     return '[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)';
-    // }
-    
+function generateBadge() {
+
     switch(license) {
         case 'Apache 2.0':
             return '[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)';
