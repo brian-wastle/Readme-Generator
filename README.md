@@ -30,6 +30,8 @@ Open the project in your preferred coding app, install the necessary packages an
 
 https://github.com/brian-wastle/Readme-Generator
 
+https://drive.google.com/file/d/1ey3M9VwVwntirqBa3cJvN_xajOyMrDqe/view
+
 ![Readme generator screenshot](./assets/images/screenshot.PNG)
 
 ## Credits
