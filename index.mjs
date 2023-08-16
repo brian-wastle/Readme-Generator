@@ -3,7 +3,7 @@ import fs from "fs/promises";
 let stepsString = '';
 let output = '';
 
-let {projectName, projectDescription, installSteps, license, confirmation} = await inquirer
+let {projectName, projectDescription, license, featuresSection, usageSteps, contributionSection, creditsSection, questionsEmail, questionsGithub, testSection, confirmation} = await inquirer
     .prompt([
         {
             type: 'input',
@@ -13,32 +13,22 @@ let {projectName, projectDescription, installSteps, license, confirmation} = awa
         {
             type: 'input',
             name: 'projectDescription',
-            message: "Write a short description for your project",
+            message: "Write a short description for your project: ",
         },
         {
-            type: 'list',
-            name: 'confirmation',
-            message: "Are there any installation steps required?",
-            choices: ['Yes', 'No'],
+            type: 'input',
+            name: 'usageSteps',
+            message: "Write a short set of instructions on how to use your project: ",
         },
-        // {
-        //     type: 'list',
-        //     name: 'projectInstallation',
-        //     message: "Are there any installation steps required?",
-        //     choices: ['Yes', 'No'],
-        // },
-        // {
-        //     type: 'input',
-        //     name: 'installSteps',
-        //     message: 'Include your install steps here: ',
-        //     when(answers) {
-        //         return answers.projectInstallation == 'Yes';
-        //         },
-        // },
+        {
+            type: 'input',
+            name: 'creditsSection',
+            message: "Please include any credits you would like to cite: ",
+        },
         {
             type: 'list',
             name: 'license',
-            message: 'Which license would you like for your project?',
+            message: 'Which license will cover your project?',
             choices: [
                 'Apache 2.0',
                 'MIT',
@@ -46,6 +36,37 @@ let {projectName, projectDescription, installSteps, license, confirmation} = awa
                 'GNU GPL v2'
             ],
         },
+        {
+            type: 'input',
+            name: 'featuresSection',
+            message: "Please include a short description of any features of your project: ",
+        },
+        {
+            type: 'input',
+            name: 'contributionSection',
+            message: "Please include any contribution guidelines: ",
+        },
+        {
+            type: 'input',
+            name: 'questionsEmail',
+            message: "Please include a contact email for user questions: ",
+        },
+        {
+            type: 'input',
+            name: 'questionsGithub',
+            message: "Please include your Gith+Hub profile for user questions: ",
+        },
+        {
+            type: 'input',
+            name: 'testSection',
+            message: "Please include instructions for a test of your project: ",
+        },
+        {
+            type: 'list',
+            name: 'confirmation',
+            message: "Are there any installation steps required?",
+            choices: ['Yes', 'No'],
+        },      
     ])
 
 
@@ -66,7 +87,7 @@ let {projectName, projectDescription, installSteps, license, confirmation} = awa
 
     function ask() {
         inquirer.prompt(questions).then((answers) => {
-          output = output + "\r\n" + answers.installSteps;
+          output = output + "<br>" + answers.installSteps;
           if (answers.askAgain == 'Yes') {
             confirmation == 'No';
             ask2();
@@ -97,7 +118,7 @@ let {projectName, projectDescription, installSteps, license, confirmation} = awa
 
     function ask2() {
         inquirer.prompt(questions2).then((answers2) => {
-            output = output + "\r\n" + answers2.installSteps2;
+            output = output + "<br>" + answers2.installSteps2;
             if (answers2.askAgain2 == 'Yes') {
             ask2();
             } else {
@@ -113,6 +134,8 @@ let readmeText =
 `
 # ${projectName}
 
+${generateBadge(license)}
+
 ## Description
 
 ${projectDescription}
@@ -125,6 +148,10 @@ If your README is long, add a table of contents to make it easy for users to fin
 - [Usage](#usage)
 - [Credits](#credits)
 - [License](#license)
+- [Features](#features)
+- [How to Contribute](#how to contribute)
+- [Questions](#questions)
+- [Tests](#tests)
 
 ## Installation
 
@@ -132,39 +159,34 @@ ${stepsString}
 
 ## Usage
 
-Provide instructions and examples for use. Include screenshots as needed.
-
-To add a screenshot, create an assets/images folder in your repository and upload your screenshot to it. Then, using the relative file path, add it to your README using the following syntax:
-
-![alt text](assets/images/screenshot.png)
+${usageSteps}
 
 ## Credits
 
-List your collaborators, if any, with links to their GitHub profiles.
-
-If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section.
-
-If you followed tutorials, include links to those here as well.
+${creditsSection}
 
 ## License
 
-Please refer to the LICENSE in the repo.
-
-## Badges
-
-${generateBadge(license)}
+This project is covered under the ${license} license.
 
 ## Features
 
-If your project has a lot of features, list them here.
+${featuresSection}
 
 ## How to Contribute
 
-If you created an application or package and would like other developers to contribute to it, you can include guidelines for how to do so. The [Contributor Covenant](https://www.contributor-covenant.org/) is an industry standard, but you can always write your own if you'd prefer.
+${contributionSection}
+
+## Questions
+
+Please contact me with additional questions at [${questionsEmail}](mailto:${questionsEmail})
+
+Please check out my other projects at [${questionsGithub}](${questionsGithub})
 
 ## Tests
 
-Go the extra mile and write tests for your application. Then provide examples on how to run them here.
+${testSection}
+
 `;
 
 
