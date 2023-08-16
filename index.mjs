@@ -1,7 +1,9 @@
 import inquirer from 'inquirer';
 import fs from "fs/promises";
+let stepsString = '';
+let output = '';
 
-let {projectName, projectDescription, installSteps, usageSteps, featuresSection, creditsSection, license,} = await inquirer
+let {projectName, projectDescription, installSteps, license, confirmation} = await inquirer
     .prompt([
         {
             type: 'input',
@@ -11,32 +13,28 @@ let {projectName, projectDescription, installSteps, usageSteps, featuresSection,
         {
             type: 'input',
             name: 'projectDescription',
-            message: "Write a short description for your project: ",
+            message: "Write a short description for your project",
         },
         {
             type: 'list',
-            name: 'projectInstallation',
+            name: 'confirmation',
             message: "Are there any installation steps required?",
             choices: ['Yes', 'No'],
         },
-        {
-            type: 'input',
-            name: 'installSteps',
-            message: 'Include your install steps here: ',
-            when(answers) {
-                return answers.projectInstallation == 'Yes';
-                },
-        },
-        {
-            type: 'input',
-            name: 'usageSteps',
-            message: "Write a short set of instructions on how to use your project: ",
-        },
-        {
-            type: 'input',
-            name: 'creditsSection',
-            message: "Include anyone you would like to credit in your readme: ",
-        },
+        // {
+        //     type: 'list',
+        //     name: 'projectInstallation',
+        //     message: "Are there any installation steps required?",
+        //     choices: ['Yes', 'No'],
+        // },
+        // {
+        //     type: 'input',
+        //     name: 'installSteps',
+        //     message: 'Include your install steps here: ',
+        //     when(answers) {
+        //         return answers.projectInstallation == 'Yes';
+        //         },
+        // },
         {
             type: 'list',
             name: 'license',
@@ -48,15 +46,68 @@ let {projectName, projectDescription, installSteps, usageSteps, featuresSection,
                 'GNU GPL v2'
             ],
         },
-        {
-            type: 'input',
-            name: 'featuresSection',
-            message: "Include any features you would like to point out: ",
-        },
     ])
 
 
 
+    const questions = [
+        {
+            type: 'input',
+            name: 'installSteps',
+            message: 'Write your first installation step here: ',
+        },
+        {
+            type: 'list',
+            name: 'askAgain',
+            message: "Are there any additional installation steps required?",
+            choices: ['Yes', 'No'],
+        },
+    ]
+
+    function ask() {
+        inquirer.prompt(questions).then((answers) => {
+          output = output + "\r\n" + answers.installSteps;
+          if (answers.askAgain == 'Yes') {
+            confirmation == 'No';
+            ask2();
+          } else {
+            stepsString = output;
+            setReadmeText();
+          }
+        });
+    }
+
+    if (confirmation == 'Yes') {
+        ask();
+    }
+
+    const questions2 = [
+        {
+            type: 'input',
+            name: 'installSteps2',
+            message: 'Write your next installation step here: ',
+        },
+        {
+            type: 'list',
+            name: 'askAgain2',
+            message: "Are there any additional installation steps required?",
+            choices: ['Yes', 'No'],
+        },
+    ]
+
+    function ask2() {
+        inquirer.prompt(questions2).then((answers2) => {
+            output = output + "\r\n" + answers2.installSteps2;
+            if (answers2.askAgain2 == 'Yes') {
+            ask2();
+            } else {
+                stepsString = output;
+                setReadmeText();
+            }
+        });
+      }
+
+function setReadmeText() {
 
 let readmeText = 
 `
@@ -66,26 +117,34 @@ let readmeText =
 
 ${projectDescription}
 
-## Table of Contents
+## Table of Contents (Optional)
+
+If your README is long, add a table of contents to make it easy for users to find what they need.
 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Credits](#credits)
 - [License](#license)
-- [Badges](#badges)
-- [Features](#features)
 
 ## Installation
 
-${installSteps}
+${stepsString}
 
 ## Usage
 
-${usageSteps}
+Provide instructions and examples for use. Include screenshots as needed.
+
+To add a screenshot, create an assets/images folder in your repository and upload your screenshot to it. Then, using the relative file path, add it to your README using the following syntax:
+
+![alt text](assets/images/screenshot.png)
 
 ## Credits
 
-${creditsSection}
+List your collaborators, if any, with links to their GitHub profiles.
+
+If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section.
+
+If you followed tutorials, include links to those here as well.
 
 ## License
 
@@ -97,12 +156,20 @@ ${generateBadge(license)}
 
 ## Features
 
-${featuresSection}
+If your project has a lot of features, list them here.
 
+## How to Contribute
+
+If you created an application or package and would like other developers to contribute to it, you can include guidelines for how to do so. The [Contributor Covenant](https://www.contributor-covenant.org/) is an industry standard, but you can always write your own if you'd prefer.
+
+## Tests
+
+Go the extra mile and write tests for your application. Then provide examples on how to run them here.
 `;
 
-fs.writeFile("README.md", readmeText);
 
+fs.writeFile("README.md", readmeText);
+}
 
 function generateBadge() {
 
