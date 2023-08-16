@@ -26,7 +26,11 @@ If your README is long, add a table of contents to make it easy for users to fin
 
 ## Usage
 
-Open the project in your preferred coding app, install the necessary packages and run the program in the terminal.
+Open the project in your preferred coding app, install the necessary packages and run "node index.mjs" in the terminal. Answer the prompts and your answers will be generated in the README.md file.
+
+https://github.com/brian-wastle/Readme-Generator
+
+![Readme generator screenshot](./assets/images/screenshot.PNG)
 
 ## Credits
 
